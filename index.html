@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <title>C.P. COMPANY ARCHIVE</title>
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="./css/style.css" />
+
+        <!-- LOADING CSS -->
+        <link rel="stylesheet" href="./css/section/loading.css" />
+
+        <!-- HOME CSS -->
+        <link rel="stylesheet" href="./css/section/home.css" />
+    </head>
+
+    <body>
+        <!-- INTRO LOADING -->
+        <div class="intro">
+            <div class="intro_inner">
+                <!-- 문구 영역 -->
+                <div class="intro_text-wrap">
+                    <p class="intro_text">BORN IN 1971</p>
+                    <p class="intro_text">ROOTED IN UTILITY</p>
+                    <p class="intro_text">DRIVEN BY RESEARCH</p>
+                    <p class="intro_text">SHAPED BY FUNCTION</p>
+                    <p class="intro_text">MATERIALS REIMAGINED</p>
+                    <p class="intro_text">COLOUR IN MOTION</p>
+                    <p class="intro_text">DEFINED BY EXPERIMENT</p>
+                    <p class="intro_text">BEYOND THE ORDINARY</p>
+                </div>
+
+                <!-- 로고 영역 -->
+                <div class="intro_logo">
+                    <!-- 왼쪽 로고 -->
+                    <div class="intro_logo-left">
+                        <img src="../img/loading/loading_logo_left.png" alt="" />
+                    </div>
+
+                    <!-- 오른쪽 로고 -->
+                    <div class="intro_logo-right">
+                        <img src="../img/loading/loading_logo_right (1).png" alt="" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 여기부터 기존 메인 페이지 -->
+
+        <!-- 헤더 -->
+        <div id="header_inner"></div>
+
+        <!-- 메인 -->
+        <main id="main">
+            <section id="home" aria-label="C.P. Company Archive">
+                <!-- 곡선형 배경 -->
+                <div class="grid-background">
+                    <div class="grid-surface"></div>
+                </div>
+
+                <!-- 나선형 갤러리 -->
+                <div class="spiral-scene">
+                    <div class="spiral-gallery" id="spiralGallery"></div>
+                </div>
+
+                <!-- 중앙 3D 렌즈 -->
+                <div class="lens-container">
+                    <canvas id="lensCanvas"></canvas>
+                </div>
+
+                <!-- 하단 메뉴 -->
+                <footer class="bottom-nav">
+                    <p>C.P. COMPANY ARCHIVE</p>
+
+                    <a href="./collection.html" class="collection-link"> all collection </a>
+
+                    <p>©2026</p>
+                </footer>
+            </section>
+        </main>
+
+        <!-- GSAP -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+        <!-- LOADING JS -->
+        <script src="./js/loading.js"></script>
+
+        <!-- HOME JS -->
+        <script type="module" src="./js/home.js"></script>
+
+        <!-- HEADER JS -->
+        <script src="./js/header.js"></script>
+
+        <!-- 헤더 불러오기 -->
+        <script>
+            fetch("./components/header.html")
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error("헤더 파일을 불러오지 못했습니다.");
+                    }
+                    return response.text();
+                })
+                .then((html) => {
+                    document.querySelector("#header_inner").innerHTML = html;
+
+                    /* 헤더 애니메이션 실행 */
+                    initHeader();
+                })
+                .catch((error) => console.error(error));
+        </script>
+    </body>
+</html>
