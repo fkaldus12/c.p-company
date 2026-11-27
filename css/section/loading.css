@@ -1,243 +1,174 @@
-/* ========================================
-   INTRO LOADING
-======================================== */
-
-/* ========================================
-   01. BASIC
-======================================== */
+/* INTRO LOADING */
 
 body {
-    margin: 0;
+  margin: 0;
 }
-
-/* ========================================
-   02. INTRO
-======================================== */
 
 .intro,
 .intro *,
 .intro *::before,
 .intro *::after {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .intro {
-    position: fixed;
-    inset: 0;
-
-    width: 100%;
-    height: 100vh;
-    height: 100svh;
-
-    z-index: 9999;
-
-    overflow: hidden;
-
-    isolation: isolate;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100svh;
+  z-index: 9999;
+  overflow: hidden;
+  isolation: isolate;
 }
 
-/* ========================================
-   03. BACKGROUND
-======================================== */
+/* Background */
 
 .intro::before {
-    content: "";
-
-    position: absolute;
-    inset: 0;
-
-    z-index: -1;
-
-    background: linear-gradient(180deg, #0e0d0e 0%, #1a1a1a 35%, #242424 65%, #0e0d0e 100%);
-
-    pointer-events: none;
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, #0e0d0e 0%, #1a1a1a 35%, #242424 65%, #0e0d0e 100%);
+  pointer-events: none;
 }
 
-/* ========================================
-   04. INTRO INNER
-======================================== */
+/* Inner */
 
 .intro_inner {
-    position: relative;
+  position: relative;
+  width: calc(100% - 120px);
+  max-width: 1600px;
+  height: 100%;
+  margin: 0 auto;
 
-    width: calc(100% - 120px);
-    max-width: 1600px;
-    height: 100%;
-
-    margin: 0 auto;
-
-    display: grid;
-    place-items: center;
+  display: grid;
+  place-items: center;
 }
 
-/* ========================================
-   05. TEXT
-======================================== */
+/* Text */
 
 .intro_text-wrap {
-    grid-area: 1 / 1;
-
-    position: relative;
-
-    width: 100%;
-    height: 1.5em;
-
-    margin-top: -7vh;
-
-    font-size: 36px;
+  grid-area: 1 / 1;
+  position: relative;
+  width: 100%;
+  height: 1.5em;
+  margin-top: -7vh;
+  font-size: 36px;
 }
-
-/* 각각의 문구 */
 
 .intro_text {
-    position: absolute;
-    inset: 0;
+  position: absolute;
+  inset: 0;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-    margin: 0;
+  margin: 0;
+  color: #ffffff;
+  font-family: "Roboto Mono", monospace;
+  font-size: inherit;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-align: center;
+  white-space: nowrap;
 
-    color: #ffffff;
-
-    /* font.css에서 설정한 폰트 사용 */
-    font-family: "Roboto Mono", monospace;
-
-    font-size: inherit;
-    font-weight: 400;
-
-    line-height: 1.2;
-    letter-spacing: 0;
-
-    text-align: center;
-    white-space: nowrap;
-
-    opacity: 0;
-    visibility: hidden;
+  opacity: 0;
+  visibility: hidden;
 }
 
-/* ========================================
-   06. LOGO
-======================================== */
+/* Logo */
 
 .intro_logo {
-    grid-area: 1 / 1;
+  grid-area: 1 / 1;
 
-    display: flex;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 
-    justify-content: center;
-    align-items: flex-start;
+  width: max-content;
+  height: auto;
+  margin: -7vh 0 0;
+  padding: 0;
 
-    width: max-content;
-    height: auto;
-
-    margin: -7vh 0 0;
-    padding: 0;
-
-    opacity: 0;
-    visibility: hidden;
+  opacity: 0;
+  visibility: hidden;
 }
-
-/* ========================================
-   07. LOGO LEFT / RIGHT
-======================================== */
 
 .intro_logo-left,
 .intro_logo-right {
-    flex: 0 0 auto;
-
-    width: auto;
-    height: auto;
-
-    margin: 0;
-    padding: 0;
+  flex: 0 0 auto;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0;
 }
-
-/* 실제 로고 이미지 */
 
 .intro_logo-left img,
 .intro_logo-right img {
-    display: block;
-
-    width: auto;
-
-    /*
-        로고 크기
-        최대 약 180px
-    */
-    height: clamp(40px, 8vw, 120px);
-
-    max-width: none;
-
-    margin: 0;
-    padding: 0;
-
-    object-fit: contain;
+  display: block;
+  width: auto;
+  height: clamp(40px, 8vw, 120px);
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  object-fit: contain;
 }
 
-/* ========================================
-   08. 1024px
-======================================== */
+/* Tablet */
 
 @media (max-width: 1024px) {
-    .intro_inner {
-        width: calc(100% - 80px);
-    }
+  .intro_inner {
+    width: calc(100% - 80px);
+  }
 
-    .intro_text-wrap {
-        margin-top: 0;
+  .intro_text-wrap {
+    margin-top: 0;
+    font-size: 28px;
+  }
 
-        font-size: 28px;
-    }
+  .intro_logo-left img,
+  .intro_logo-right img {
+    height: clamp(40px, 9.8vw, 100px);
+  }
 
-    .intro_logo-left img,
-    .intro_logo-right img {
-        height: clamp(40px, 9.8vw, 100px);
-    }
-    .intro_logo {
-        margin-top: 0;
-
-        /* 태블릿 및 모바일 로고 위치 보정 */
-        position: relative;
-        top: clamp(3px, 0.55vw, 6px);
-    }
+  .intro_logo {
+    margin-top: 0;
+    position: relative;
+    top: clamp(3px, 0.55vw, 6px);
+  }
 }
 
-/* ========================================
-   09. 768px
-======================================== */
+/* Mobile */
 
 @media (max-width: 768px) {
-    .intro_inner {
-        width: calc(100% - 60px);
-    }
+  .intro_inner {
+    width: calc(100% - 60px);
+  }
 
-    .intro_text-wrap {
-        font-size: 24px;
-    }
+  .intro_text-wrap {
+    font-size: 24px;
+  }
 
-    .intro_logo-left img,
-    .intro_logo-right img {
-        height: clamp(35px, 9.5vw, 75px);
-    }
+  .intro_logo-left img,
+  .intro_logo-right img {
+    height: clamp(35px, 9.5vw, 75px);
+  }
 }
 
-/* ========================================
-   10. 480px
-======================================== */
-
 @media (max-width: 480px) {
-    .intro_inner {
-        width: calc(100% - 40px);
-    }
+  .intro_inner {
+    width: calc(100% - 40px);
+  }
 
-    .intro_text-wrap {
-        font-size: clamp(15px, 4.17vw, 20px);
-    }
+  .intro_text-wrap {
+    font-size: clamp(15px, 4.17vw, 20px);
+  }
 
-    .intro_logo-left img,
-    .intro_logo-right img {
-        height: clamp(28px, 9vw, 44px);
-    }
+  .intro_logo-left img,
+  .intro_logo-right img {
+    height: clamp(28px, 9vw, 44px);
+  }
 }

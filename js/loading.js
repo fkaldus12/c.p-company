@@ -1,216 +1,165 @@
-/* ========================================
-   INTRO LOADING
-   FAST CUT + POWERFUL LOGO
-======================================== */
-
+/* 인트로 로딩 */
 const intro = document.querySelector(".intro");
+const introPlayed = sessionStorage.getItem("introPlayed");
 
-if (intro && window.gsap) {
-    const texts = intro.querySelectorAll(".intro_text");
+if (intro && introPlayed === "true") {
+  // 이미 로딩을 실행했다면 바로 제거
+  intro.remove();
+} else if (intro && window.gsap) {
+  // 최초 실행 기록 저장
+  sessionStorage.setItem("introPlayed", "true");
+  const texts = intro.querySelectorAll(".intro_text");
+  const logo = intro.querySelector(".intro_logo");
+  const logoLeft = intro.querySelector(".intro_logo-left");
+  const logoRight = intro.querySelector(".intro_logo-right");
 
-    const logo = intro.querySelector(".intro_logo");
+  /* 속도 설정 */
 
-    const logoLeft = intro.querySelector(".intro_logo-left");
+  const speed = {
+    textIn: 0.1, // 텍스트 등장
+    textStay: 0.15, // 텍스트 유지
+    textOut: 0.12, // 텍스트 사라짐
 
-    const logoRight = intro.querySelector(".intro_logo-right");
+    silence: 0.12, // 로고 등장 전 대기
 
-    /* ========================================
-       01. SPEED
-    ======================================== */
-    const speed = {
-        // 문구
-        textIn: 0.1, // 나타나는 속도
-        textStay: 0.2, // 화면에 머무는 시간
-        textOut: 0.1, // 사라지는 속도
+    logoIn: 0.2, // 로고 등장
+    logoStay: 0.5, // 로고 중앙 정지
+    logoOpen: 0.38, // 로고 좌우 분리
 
-        // 로고
-        logoIn: 0.32,
-        logoStay: 0.32,
+    fadeOut: 0.18, // 메인 화면 전환
+  };
 
-        // 로고 분리
-        logoOpen: 0.4,
+  /* 스크롤 방지 */
 
-        // 메인 전환
-        fadeOut: 0.25,
-    };
-    /* ========================================
-       02. SCROLL STOP
-    ======================================== */
+  const originalOverflow = document.documentElement.style.overflow;
 
-    const originalOverflow = document.documentElement.style.overflow;
+  document.documentElement.style.overflow = "hidden";
 
-    document.documentElement.style.overflow = "hidden";
+  /* 텍스트 저장 */
 
-    /* ========================================
-       03. TEXT CONTENT
-    ======================================== */
+  const messages = Array.from(texts).map(function (text) {
+    return text.textContent.trim();
+  });
 
-    // 기존 문구 저장
-    const messages = Array.from(texts).map(function (text) {
-        return text.textContent.trim();
+  const textDisplay = texts[0];
+
+  /* 초기 상태 설정 */
+
+  gsap.set(texts, {
+    autoAlpha: 0,
+  });
+
+  gsap.set(logo, {
+    autoAlpha: 0,
+  });
+
+  gsap.set([logoLeft, logoRight], {
+    x: 0,
+    opacity: 1,
+  });
+
+  /* 애니메이션 타임라인 */
+
+  const timeline = gsap.timeline({
+    onComplete: function () {
+      intro.remove();
+
+      document.documentElement.style.overflow = originalOverflow;
+    },
+  });
+
+  /* 텍스트 변경 */
+
+  for (let i = 0; i < messages.length; i++) {
+    // 문구 변경
+    timeline.call(function () {
+      textDisplay.textContent = messages[i];
     });
 
-    // 하나의 텍스트 영역만 사용
-    const textDisplay = texts[0];
-
-    /* ========================================
-       04. INITIAL STATE
-    ======================================== */
-
-    gsap.set(texts, {
-        autoAlpha: 0,
+    // 텍스트 등장
+    timeline.to(textDisplay, {
+      autoAlpha: 1,
+      duration: speed.textIn,
+      ease: "power1.out",
     });
 
-    gsap.set(textDisplay, {
-        autoAlpha: 1,
-    });
-
-    gsap.set(logo, {
-        autoAlpha: 0,
-    });
-    gsap.set([logoLeft, logoRight], {
-        x: 0,
-        opacity: 1,
-    });
-
-    /* ========================================
-       05. TIMELINE
-    ======================================== */
-
-    const timeline = gsap.timeline({
-        onComplete: function () {
-            intro.remove();
-
-            document.documentElement.style.overflow = originalOverflow;
-        },
-    });
-
-    /* ========================================
-   06. FAST TEXT CHANGE
-======================================== */
-
-    for (let i = 0; i < messages.length; i++) {
-        // 문구 즉시 교체 (페이드 없음)
-        timeline.call(function () {
-            textDisplay.textContent = messages[i];
-        });
-
-        // 문구 유지
-        timeline.to(
-            {},
-            {
-                duration: speed.textStay,
-            },
-        );
-    }
-
-    /* ========================================
-   07. SILENCE
-======================================== */
-
-    // 마지막 문구 즉시 제거
-    timeline.set(textDisplay, {
-        autoAlpha: 0,
-    });
-
-    // 잠깐 정적
+    // 텍스트 유지
     timeline.to(
-        {},
-        {
-            duration: speed.silence,
-        },
+      {},
+      {
+        duration: speed.textStay,
+      },
     );
 
-    /* ========================================
-   08. LOGO FADE IN
-======================================== */
-
-    // 로고만 자연스럽게 등장
-    timeline.to(logo, {
-        autoAlpha: 1,
-
-        duration: speed.logoIn,
-
-        ease: "power1.out",
+    // 텍스트 사라짐
+    timeline.to(textDisplay, {
+      autoAlpha: 0,
+      duration: speed.textOut,
+      ease: "power1.in",
     });
+  }
 
-    /* ========================================
-   09. LOGO HOLD
-======================================== */
+  /* 로고 등장 전 대기 */
 
-    // 중앙에서 정지
-    timeline.to(
-        {},
-        {
-            duration: speed.logoStay,
-        },
-    );
+  timeline.to(
+    {},
+    {
+      duration: speed.silence,
+    },
+  );
 
-    /* ========================================
-   10. LOGO EXPANSION
-   SMOOTH & WEIGHTED
-======================================== */
+  /* 로고 등장 */
 
-    // 왼쪽 로고
-    timeline.to(logoLeft, {
-        x: -(window.innerWidth + 200),
+  timeline.to(logo, {
+    autoAlpha: 1,
+    duration: speed.logoIn,
+    ease: "power1.out",
+  });
 
-        duration: speed.logoOpen,
+  /* 로고 중앙 정지 */
 
-        ease: "power2.in",
-    });
+  timeline.to(
+    {},
+    {
+      duration: speed.logoStay,
+    },
+  );
 
-    // 오른쪽 로고
-    timeline.to(
-        logoRight,
-        {
-            x: window.innerWidth + 200,
+  /* 로고 좌우 분리 */
 
-            duration: speed.logoOpen,
+  timeline.to(logoLeft, {
+    x: -(window.innerWidth + 200),
+    duration: speed.logoOpen,
+    ease: "power2.in",
+  });
 
-            ease: "power2.in",
-        },
-        "<",
-    );
+  timeline.to(
+    logoRight,
+    {
+      x: window.innerWidth + 200,
+      duration: speed.logoOpen,
+      ease: "power2.in",
+    },
+    "<",
+  );
 
-    // 마지막 순간 자연스럽게 사라짐
-    timeline.to(
-        [logoLeft, logoRight],
-        {
-            opacity: 0,
+  /* 로고 사라짐 */
 
-            duration: 0.16,
+  timeline.to(
+    [logoLeft, logoRight],
+    {
+      opacity: 0,
+      duration: 0.16,
+      ease: "none",
+    },
+    "<+=0.22",
+  );
 
-            ease: "none",
-        },
-        "<+=0.46",
-    );
+  /* 메인 화면 전환 */
 
-    /* ========================================
-   11. MAIN REVEAL
-======================================== */
-
-    timeline.to(intro, {
-        opacity: 0,
-
-        duration: speed.fadeOut,
-
-        ease: "none",
-    });
-
-    /* ========================================
-   11. MAIN REVEAL
-======================================== */
-
-    timeline.to(
-        intro,
-        {
-            opacity: 0,
-
-            duration: speed.fadeOut,
-
-            ease: "none",
-        },
-        "-=0.05",
-    );
+  timeline.to(intro, {
+    opacity: 0,
+    duration: speed.fadeOut,
+    ease: "none",
+  });
 }
